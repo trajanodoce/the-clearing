@@ -81,14 +81,24 @@ SQL safety).
 - url: issue URL. occurred_at: issue updatedAt.
 - needs_attention: true when due within 48h or state is blocked; else false.
 
-### notion — Notion (Notion MCP)
-- Pull: `notion-list-recent-pages` (max 10) and, if cheap,
-  `notion-get-comments` on pages that show recent comment activity.
-- external_id: page or comment ID. kind: `page` / `comment`.
-- title: page title (or `Comment on "<page>"`). actor: last editor/commenter
-  when it isn't Taylor. Skip pages whose only recent editor is Taylor herself.
-- url: page URL. occurred_at: last-edited time. needs_attention: false
-  (true only for comments that name/@-mention Taylor).
+### notion — Notion (Notion MCP) — MENTIONS ONLY
+Taylor's rule (Aug 26 2026): Notion's job in this feed is her inbox — tagged
+comments and requests aimed at her. Plain page edits are noise; do NOT feed
+them.
+- Pull: `notion-list-recent-pages` (max ~15) as the candidate set, then
+  `notion-get-comments` on each candidate page.
+- Keep ONLY comments that @-mention Taylor (match her Notion user — resolve
+  once via `notion-get-users`, look for taylor@stackblitz.com — or the
+  literal strings "@Taylor" / her display name) or that directly reply to a
+  comment Taylor wrote. Skip comments authored by Taylor herself.
+- external_id: comment ID. kind: `comment`. actor: commenter name.
+- title: `Comment on "<page title>"`. snippet: the comment text.
+- url: page URL. occurred_at: comment created time.
+- needs_attention: **true for every kept item** (each one is addressed to her).
+- If a page's comments can't be fetched, skip it silently (don't fail the
+  source). Known limit: Notion's API has no notifications-inbox endpoint, so
+  mentions on pages with no recent activity can be missed — this is an
+  approximation, by design.
 
 ### contentedcal — ContentedCal (Supabase MCP, project `riizkhddtaacmcymbeqo`)
 - Pull via read-only SQL: content items / tasks scheduled or due within the
