@@ -1,0 +1,110 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Design tokens — CSS variables (RGB channel format)
+   ───────────────────────────────────────────────────────────────────────
+   Single source of truth for theme-level colors. Values are space-separated
+   RGB channels (NOT hex) so Tailwind's `rgb(var(--x) / <alpha-value>)`
+   pattern can apply opacity modifiers natively (e.g. `bg-brand-600/12`).
+
+   Why channels + vars:
+   - Runtime white-labeling — swap a workspace's brand color by overriding
+     `--color-brand-600` on a wrapper element; every token-driven class +
+     style follows. Tailwind classes are compile-time, so the var layer is
+     what makes per-workspace overrides possible.
+   - Dark mode — flip semantic values in the `.dark` block (empty for now;
+     light values cascade until the dark-mode color pass populates it).
+
+   These values reproduce the pre-token palette EXACTLY — no visual change.
+   The Tailwind config (tailwind.config.js) references every one of these.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Brand ramp (primary blue → dark navy) ──────────────────────────── */
+  --color-brand-50: 244 248 251;   /* #F4F8FB */
+  --color-brand-100: 224 239 248;  /* #E0EFF8 */
+  --color-brand-200: 183 206 236;  /* #B7CEEC */
+  --color-brand-300: 123 192 232;  /* #7BC0E8 */
+  --color-brand-400: 59 157 212;   /* #3B9DD4 */
+  --color-brand-500: 0 112 181;    /* #0070B5 */
+  --color-brand-600: 0 93 151;     /* #005D97 — primary brand ("navy" in design doc) */
+  --color-brand-700: 0 61 102;     /* #003D66 */
+  --color-brand-800: 0 51 80;      /* #003350 */
+  --color-brand-900: 0 35 57;      /* #002339 — darkest navy (borders, deep text) */
+  --color-brand-950: 0 26 43;      /* #001A2B */
+
+  /* ── Surfaces ───────────────────────────────────────────────────────── */
+  --color-surface-page: 244 248 251;   /* #F4F8FB */
+  --color-surface-card: 247 249 252;   /* #F7F9FC */
+  --color-surface-nested: 249 247 251; /* #F9F7FB */
+
+  /* ── Accents / state ────────────────────────────────────────────────── */
+  --color-accent-pink: 251 231 241;     /* #FBE7F1 — banner/gradient pink */
+  --color-accent-coral: 255 195 184;    /* #FFC3B8 */
+  --color-accent-lavender: 211 205 236; /* #D3CDEC */
+  --color-accent-mint: 146 209 178;     /* #92D1B2 — success tint */
+  --color-accent-crimson: 186 44 44;    /* #BA2C2C — error / overdue / destructive */
+  --color-accent-teal: 47 136 137;      /* #2F8889 — AI Assistant accent */
+  --color-accent-berry: 184 68 122;     /* #B8447A — design category + linked-task relationships (Commit B) */
+
+  /* ── Neutral ramp (slate) ───────────────────────────────────────────── */
+  /* Reproduces Tailwind's default `slate` scale. Overriding the scale with
+     vars (see tailwind.config.js) makes every existing `text-slate-*` /
+     `bg-slate-*` / `border-slate-*` class themeable for dark mode with zero
+     call-site changes — the dark-mode pass redefines these in `.dark`. */
+  --color-slate-50: 248 250 252;
+  --color-slate-100: 241 245 249;
+  --color-slate-200: 226 232 240;
+  --color-slate-300: 203 213 225;
+  --color-slate-400: 148 163 184;
+  --color-slate-500: 100 116 139;
+  --color-slate-600: 71 85 105;
+  --color-slate-700: 51 65 85;
+  --color-slate-800: 30 41 59;
+  --color-slate-900: 15 23 42;
+  --color-slate-950: 2 6 23;
+
+  /* ── Semantic text roles ────────────────────────────────────────────── */
+  /* Role-named aliases over the neutral ramp. Preferred for new code +
+     portable to other apps — dark mode swaps the *meaning*, not just shade. */
+  --color-text-primary: 15 23 42;    /* slate-900 — headings, primary copy */
+  --color-text-secondary: 51 65 85;  /* slate-700 — body */
+  --color-text-muted: 100 116 139;   /* slate-500 — secondary/meta */
+  --color-text-subtle: 148 163 184;  /* slate-400 — placeholders, faint */
+  --color-text-inverse: 255 255 255; /* on dark/brand fills */
+
+  /* ── Semantic borders ───────────────────────────────────────────────── */
+  --color-border-subtle: 226 232 240;  /* slate-200 — hairlines, dividers */
+  --color-border-default: 0 35 57;     /* brand-900, used at low alpha */
+  --color-border-strong: 100 116 139;  /* slate-500 — emphasized */
+
+  /* ── State ──────────────────────────────────────────────────────────── */
+  --color-state-success: 53 114 84;       /* #357254 */
+  --color-state-success-tint: 146 209 178; /* #92D1B2 (mint) */
+  --color-state-error: 186 44 44;          /* #BA2C2C (= accent-crimson) */
+  --color-state-warning: 245 158 11;       /* #F59E0B (amber-500) */
+  --color-state-warning-tint: 255 195 184; /* #FFC3B8 (coral/peach) */
+  --color-state-info: 0 93 151;            /* #005D97 (= brand-600) */
+  --color-state-completed: 74 111 160;        /* #4A6FA0 — done/completed (distinct from success-green) */
+  --color-state-completed-tint: 183 206 236;  /* #B7CEEC */
+
+  /* ── Status spectrum (board workflow arc) ───────────────────────────── */
+  /* Default warm→cool spectrum for board statuses. The app renders actual
+     columns from `board_columns.color` at runtime; these tokens are the
+     canonical default + a stable by-name reference (e.g. done/blocked) for
+     components that need a status color independent of DB state. */
+  --color-status-backlog:   148 163 184;  /* #94A3B8 — Slate */
+  --color-status-research:  255 176 124;  /* #FFB07C — Apricot */
+  --color-status-draft:     210 121 210;  /* #D279D2 — Orchid */
+  --color-status-review:    110 123 192;  /* #6E7BC0 — Wisteria (bluer, off Ordinal lavender) */
+  --color-status-approved:  146 209 178;  /* #92D1B2 — Mint (= accent-mint) */
+  --color-status-scheduled:  24 118 122;  /* #18767A — Teal */
+  --color-status-done:        0  97 194;  /* #0061C2 — Cobalt (board "Published/Done" status). INTENTIONALLY distinct from --color-state-completed (#4A6FA0) above, which stays steel for completion checkmarks + subtask-done — do not merge. */
+  --color-status-blocked:   186  44  44;  /* #BA2C2C — Crimson (= accent-crimson) */
+}
+
+/* Reserved for the dark-mode color pass (follow-up project). Empty body is
+   intentional — light :root values cascade until dark equivalents are
+   chosen. The structure being here means dark mode is a values-only change,
+   no refactor. */
+.dark {
+  /* e.g. --color-surface-page: 15 20 25;  (populated by the dark-mode pass) */
+}
