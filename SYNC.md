@@ -124,4 +124,8 @@ them.
   old work project `ifsgxxzglfcmzzgzgoxt` is retired: never write there.
 - Keep total items bounded: if a source pull returns more than its max,
   take the newest.
+- Never generate external_ids starting with `p-` — that prefix is reserved
+  for the personal-Claude routine (docs/personal-claude-bootstrap.md), and
+  the resolution RPC automatically ignores those rows when called without a
+  prefix (as this routine does).
 - If the whole run must abort, still write the `sync_runs` error rows.
