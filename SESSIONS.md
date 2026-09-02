@@ -50,9 +50,10 @@ the actual date, so a pause meant to lift Mon Aug 31 ran until Wed Sep 2.
 Cron does not backfill. Always take the date from `date`, never from content.
 
 ### Open
-- `inbox-invite-auto-accept` left OFF pending Taylor's call — it both
-  auto-accepts invites and archives mail, the same class of behavior this
-  session pulled back everywhere else.
+- `inbox-invite-auto-accept` reviewed and KEPT AS-IS (Taylor, Sep 2: "it's
+  working great"). It's the one sanctioned exception to the day's
+  no-auto-archiving principle — its archiving is confined to invite and
+  response notifications, which are disposable by nature.
 - `monthly-receipts-compile` missed Sep 1 and needs a manual run if the
   Everything Marketing draft is wanted this month.
 - 25 archived threads still carry Needs Response / Follow-Up labels back to
