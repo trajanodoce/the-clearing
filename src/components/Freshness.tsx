@@ -17,7 +17,7 @@ export function Freshness({ runs }: { runs: SyncRun[] }) {
 
   const mins = Math.round((Date.now() - latest) / 60000);
   const label = mins < 1 ? "just now" : mins < 60 ? `${mins}m ago` : `${Math.round(mins / 60)}h ago`;
-  const stale = mins > 45;
+  const stale = mins > 60;
 
   return (
     <span

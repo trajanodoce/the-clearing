@@ -12,6 +12,16 @@ the project-scoped service key stored at
 `~/.config/the-clearing/service-role-key` (never print it; read it into a
 shell variable).
 
+## What The Clearing is now (changed Aug 28 2026)
+
+The Clearing is Taylor's TRIAGE SURFACE, not just a mirror. She marks items
+Done or Snoozed in the app; that state lives only in `feed_items`
+(`handled_at` / `snoozed_until`) and is never written back to any source.
+Because she now triages here, her Gmail inbox is no longer auto-archived by
+any routine — so pull generously and let her filter, rather than
+pre-deciding what she should see. `sync_upsert_items` preserves her triage
+state on re-sync; never try to clear it.
+
 ## Write pattern
 
 Base URL: `https://zudwneeqijvqnsqbuwgn.supabase.co`. Every call sends
@@ -51,7 +61,9 @@ SQL safety).
 ## Sources
 
 ### gmail — Gmail (gmail-autoauth MCP)
-- Pull: `search_emails` with `in:inbox is:unread newer_than:2d`, max 25.
+- Pull: `search_emails` with `in:inbox is:unread newer_than:4d`, max 50.
+  (Widened Aug 28 2026: the afternoon-wrap routine no longer archives her inbox,
+  so unread accumulates and The Clearing is now the surface she triages from.)
 - external_id: Gmail message ID. kind: `email`. actor: sender display name.
 - title: subject. snippet: from the search/read result. occurred_at: email date.
 - url: `https://mail.google.com/mail/u/0/#inbox/<messageId>`
@@ -65,14 +77,21 @@ SQL safety).
 - snippet: local start–end time + location/meet link hint. occurred_at: event start.
 - url: the event's htmlLink. needs_attention: false. Skip declined events.
 
-### slack — Slack (Slack MCP)
-- Pull: `slack_search_public_and_private` for mentions of Taylor
-  (e.g. `@Taylor` / her user ID) in the last 24h, max 15.
-- external_id: message permalink or channel+ts. kind: `mention`.
-- actor: message author. title: `#channel — <first ~60 chars>`.
-- snippet: message text. url: permalink. occurred_at: message ts.
-- needs_attention: true (a mention is a request by default).
-- DMs are NOT pulled in v1 (search scope limitation); mentions only.
+### slack — Slack (Slack MCP) — mentions AND DMs
+- **Mentions:** `slack_search_public_and_private` for mentions of Taylor
+  (`@Taylor` / her user ID, U0AHK3VASHG) in the last 24h, max 15.
+  kind: `mention`. title: `#channel — <first ~60 chars>`.
+- **DMs:** also pull direct messages to Taylor from the last 24h, max 15.
+  kind: `dm`. title: `DM from <sender> — <first ~60 chars>`.
+  Try `slack_search_public_and_private` scoped to DM conversations first. If
+  the connector cannot reach DMs, do NOT fail the source and do NOT silently
+  skip: upsert mentions as normal, then call `sync_run_log` with
+  `p_status:"ok"` and note the DM gap in the summary line so it's visible.
+- Exclude messages Taylor wrote herself.
+- external_id: message permalink or channel+ts.
+- actor: message author. snippet: message text. url: permalink.
+  occurred_at: message ts.
+- needs_attention: true for both (a mention or DM is addressed to her).
 
 ### linear — Linear (Linear MCP)
 - Pull: `list_issues` assigned to Taylor, non-completed/non-canceled states, max 20.

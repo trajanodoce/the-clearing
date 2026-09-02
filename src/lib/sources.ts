@@ -103,6 +103,20 @@ export interface FeedItem {
   pinned: boolean;
   resolved_at: string | null;
   synced_at: string;
+  // Triage state — lives only in The Clearing, never written back to a source.
+  handled_at: string | null;
+  snoozed_until: string | null;
+}
+
+// Columns every view selects. Kept in one place so the pages can't drift.
+export const FEED_COLUMNS =
+  "id, source, external_id, kind, title, snippet, url, actor, occurred_at, needs_attention, pinned, resolved_at, synced_at, handled_at, snoozed_until";
+
+// An item is live if it isn't handled and isn't sleeping.
+export function isActive(i: FeedItem, now = Date.now()) {
+  if (i.handled_at) return false;
+  if (i.snoozed_until && new Date(i.snoozed_until).getTime() > now) return false;
+  return true;
 }
 
 export interface SyncRun {
