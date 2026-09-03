@@ -18,9 +18,12 @@ of what The Clearing did. Taylor's call: **park it, don't delete it.**
   (free tier, $0), this repo, the local key files, and the launch config.
   Nothing here bills, so parking is free and reversible for as long as she
   wants.
-- The retired email routines (`email-afternoon-wrap`, `email-morning-briefing`)
-  STAY retired — she confirmed the new app covers email triage, which was the
-  dependency that mattered.
+- `email-morning-briefing` stays retired. **`email-afternoon-wrap` was
+  REINSTATED later the same day** at Taylor's request as a safety net ("so my
+  inbox stays at 0 and I don't miss anything"), running with the corrected
+  conservative Step 3.5 — it archives only 🟢 items and noise, so the inbox
+  lands near zero with open loops still visible. The old archive-everything
+  behavior must not come back.
 
 **To revive:** re-enable `the-clearing-sync`. The app and database are
 untouched; the feed will repopulate on the first run. Note the feed data
