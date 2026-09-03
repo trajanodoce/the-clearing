@@ -7,6 +7,31 @@ session that touches the project.
 
 ---
 
+## 2026-09-02 (later) — Parked
+
+A work-provided app landed the same day and covers email, Slack, and the rest
+of what The Clearing did. Taylor's call: **park it, don't delete it.**
+
+- `the-clearing-sync` DISABLED — the only ongoing cost (a run every 30 min).
+- Everything else left intact and dormant: the Vercel project
+  (the-clearing-two.vercel.app), the Supabase project `zudwneeqijvqnsqbuwgn`
+  (free tier, $0), this repo, the local key files, and the launch config.
+  Nothing here bills, so parking is free and reversible for as long as she
+  wants.
+- The retired email routines (`email-afternoon-wrap`, `email-morning-briefing`)
+  STAY retired — she confirmed the new app covers email triage, which was the
+  dependency that mattered.
+
+**To revive:** re-enable `the-clearing-sync`. The app and database are
+untouched; the feed will repopulate on the first run. Note the feed data
+will be stale until then, and the header freshness dot will say so.
+
+**If it's ever truly dead:** delete the Vercel project, the Supabase project,
+the scheduled task, `~/.config/the-clearing/`, and the launch.json entry.
+The GitHub repo is the cheapest thing to keep.
+
+---
+
 ## 2026-09-02 — The Triage Turn (feed becomes the to-do list)
 
 ### Why it changed
