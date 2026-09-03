@@ -56,9 +56,20 @@ Cron does not backfill. Always take the date from `date`, never from content.
   response notifications, which are disposable by nature.
 - `monthly-receipts-compile` missed Sep 1 and needs a manual run if the
   Everything Marketing draft is wanted this month.
-- 25 archived threads still carry Needs Response / Follow-Up labels back to
-  May (incl. Sam Sabin at Axios, two customer-story replies). Step 2 of the
-  retired wrap was supposed to clear those labels and never did.
+- ~~25 archived threads carrying stale Needs Response / Follow-Up labels~~
+  **CLEARED Sep 2 2026** with Taylor, five at a time: 31 messages trashed,
+  13 label-cleared and left archived, 1 restored to her inbox (Jai Saini's
+  customer story, awaiting his sign-off). Three messages of one Jonathan
+  Davis thread deliberately left as-is at her request (published story,
+  headshot question moot — she'll follow up with swag).
+  Live items surfaced by the sweep: Jai Saini's unpublished story; Paul
+  Laviolette's story approved Aug 13 with full-name permission and never
+  published; Sam Sabin (Axios) missed a same-day deadline Jul 27.
+- **The Needs Response / Follow-Up labels are now vestigial.** Only the
+  retired afternoon-wrap applied and cleared them, so nothing maintains them
+  any more — and The Clearing's needs_attention flag plus Done/Snooze covers
+  the same job without the inbox surgery. Retire the labels rather than
+  rebuilding the machinery that let them rot.
 - Repo still has no GitHub remote. Setup PAT still live.
 
 ---
